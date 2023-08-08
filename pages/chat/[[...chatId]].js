@@ -9,9 +9,11 @@ export default function ChatPage() {
   const [incomingMessage, setIncomingMessage] = useState("");
   const [messageText, setMessageText] = useState("");
   const [newChatMessages, setNewChatMessages] = useState([]);
+  const [generatingResponse, setGeneratedResponse] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setGeneratedResponse(true);
     // console.log(messageText);
     setNewChatMessages((prev) => {
       return [
@@ -23,6 +25,7 @@ export default function ChatPage() {
         },
       ];
     });
+    setMessageText("");
     const response = await fetch(`/api/chat/sendMessage`, {
       method: "POST",
       headers: {
@@ -41,6 +44,7 @@ export default function ChatPage() {
       // console.log(message);
       setIncomingMessage((s) => `${s}${message.content}`);
     });
+    setGeneratedResponse(false);
   };
   return (
     <>
@@ -49,8 +53,8 @@ export default function ChatPage() {
       </Head>
       <div className={"grid h-screen grid-cols-[260px_1fr]"}>
         <ChatSidebar />
-        <div className={"bg-gray-700 flex flex-col"}>
-          <div className={"flex-1 text-white"}>
+        <div className={"overflow-hidden bg-gray-700 flex flex-col"}>
+          <div className={"flex-1 text-white overflow-scroll"}>
             {newChatMessages.length > 0 &&
               newChatMessages.map((message) => (
                 <Message
@@ -66,11 +70,11 @@ export default function ChatPage() {
           </div>
           <footer className={"bg-gray-800 p-10"}>
             <form onSubmit={handleSubmit}>
-              <fieldset className={"flex gap-2"}>
+              <fieldset className={"flex gap-2"} disabled={generatingResponse}>
                 <textarea
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
-                  placeholder={"Send a message..."}
+                  placeholder={generatingResponse ? "" : "Send a message..."}
                   className={
                     "w-full resize-none rounded-md bg-gray-700 text-white focus:border-emerald-500 focus:bg-gray-600 focus:outline focus:outline-emerald-500"
                   }
