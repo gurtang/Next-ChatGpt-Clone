@@ -13,6 +13,7 @@ export default function ChatPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Test1");
     setGeneratedResponse(true);
     // console.log(messageText);
     setNewChatMessages((prev) => {
@@ -26,6 +27,8 @@ export default function ChatPage() {
       ];
     });
     setMessageText("");
+
+    console.log("Test");
 
     const response = await fetch("/api/chat/createNewChat", {
       method: "POST",

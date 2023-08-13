@@ -3,6 +3,7 @@ import clientPromise from "../../../lib/mongodb";
 
 export default async function handler(req, res) {
   try {
+    console.log("Pocetak");
     const { user } = await getSession(req, res);
     const { message } = req.body;
     const newUserMessage = {
@@ -23,6 +24,8 @@ export default async function handler(req, res) {
       messages: [newUserMessage],
       title: message,
     });
+
+    console.log(newUserMessage);
   } catch (e) {
     res.status(500).json({
       message: "An error occurred when creating a new chat",
