@@ -15,7 +15,7 @@ function Message({ role, content }) {
       <div>
         {role === "user" && (
           <Image
-            src={user.picture}
+            src={user?.picture}
             width={30}
             height={30}
             alt={"User avatar"}

@@ -7,7 +7,8 @@ import {
   faRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
-function ChatSidebar() {
+function ChatSidebar({ chatId }) {
+  console.log("ChatId :", chatId);
   const [chatList, setChatList] = useState([]);
   useEffect(() => {
     const loadChatList = async () => {
@@ -19,7 +20,7 @@ function ChatSidebar() {
       setChatList(json?.chats || []);
     };
     loadChatList();
-  }, []);
+  }, [chatId]);
   return (
     <div className={"bg-gray-900 text-white flex flex-col overflow-hidden"}>
       <Link
@@ -31,11 +32,19 @@ function ChatSidebar() {
       <div className={"flex-1 overflow-auto bg-gray-950"}>
         {chatList.map((chat) => (
           <Link
-            className={"side-menu-item"}
+            className={`side-menu-item ${
+              chat._id === chatId ? "bg-gray-700 hover:bg-gray-700" : ""
+            }`}
             key={chat._id}
             href={`/chat/${chat._id}`}
           >
-            <FontAwesomeIcon icon={faMessage} /> {chat.title}
+            <FontAwesomeIcon icon={faMessage} />{" "}
+            <span
+              title={chat.title}
+              className={"overflow-hidden text-ellipsis whitespace-nowrap"}
+            >
+              {chat.title}
+            </span>
           </Link>
         ))}
       </div>
