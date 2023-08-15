@@ -30,7 +30,7 @@ export default async function handler(req) {
     if (chatId) {
       //add message to chat
       const response = await fetch(
-        `${req.headers.get("origin")}/api/chat/addMessageToChat}`,
+        `${req.headers.get("origin")}/api/chat/addMessageToChat`,
         {
           method: "POST",
           headers: {
